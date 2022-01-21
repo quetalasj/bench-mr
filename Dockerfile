@@ -54,7 +54,7 @@ WORKDIR /root/code/bench-mr
 RUN pip3 install -r python/requirements.txt
 
 # Install ipywidgets for Jupyter Lab
-RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager
+#RUN #jupyter labextension install @jupyter-widgets/jupyterlab-manager
 
 # Build and install libccd 1.4
 WORKDIR /root/code

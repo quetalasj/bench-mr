@@ -104,10 +104,10 @@ struct PathEvaluation {
       if (global::settings.evaluate_clearing &&
           global::settings.environment->distance(0., 0.) >= 0.) {
         const auto clearings = ClearingMetric::clearingDistances(solution);
-        stats.mean_clearing_distance = stat::mean(clearings);
-        stats.median_clearing_distance = stat::median(clearings);
-        stats.min_clearing_distance = stat::min(clearings);
-        stats.max_clearing_distance = stat::max(clearings);
+        stats.mean_clearing_distance = statistics::mean(clearings);
+        stats.median_clearing_distance = statistics::median(clearings);
+        stats.min_clearing_distance = statistics::min(clearings);
+        stats.max_clearing_distance = statistics::max(clearings);
       }
       const auto p = Point::fromPath(solution);
       computeCusps(stats, p);
@@ -154,10 +154,10 @@ struct PathEvaluation {
       if (global::settings.evaluate_clearing &&
           global::settings.environment->distance(0., 0.) >= 0.) {
         const auto clearings = ClearingMetric::clearingDistances(solution);
-        stats.mean_clearing_distance = stat::mean(clearings);
-        stats.median_clearing_distance = stat::median(clearings);
-        stats.min_clearing_distance = stat::min(clearings);
-        stats.max_clearing_distance = stat::max(clearings);
+        stats.mean_clearing_distance = statistics::mean(clearings);
+        stats.median_clearing_distance = statistics::median(clearings);
+        stats.min_clearing_distance = statistics::min(clearings);
+        stats.max_clearing_distance = statistics::max(clearings);
       }
 
       const auto p = Point::fromPath(solution);

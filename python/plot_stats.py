@@ -79,7 +79,7 @@ def plot_planner_stats(json_file: str,
     data = json.load(file)
     file.close()
     run_ids = parse_run_ids(run_id, len(data["runs"]))
-
+    plot_violins = plot_violins & (len(data["runs"]) > 1)
     if combine_views:
         max_plots_per_line = min(max_plots_per_line, len(stat_keys))
         axes_h = max_plots_per_line

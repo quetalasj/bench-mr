@@ -26,8 +26,11 @@ MEMORY_LIMIT_FRACTION = min(0.9, 5. / os.cpu_count())
 class MPB:
     def __init__(self,
                  config_file: str = os.path.join(MPB_BINARY_DIR, 'benchmark_template.json'),
-                 output_path: str = ''):
+                 output_path: str = '', env=None):
         bin_path = os.path.abspath(os.path.join(MPB_BINARY_DIR, MPB_BINARY))
+        self._env = env
+        if env is None:
+            self._env = os.environ
         if not os.path.exists(bin_path):
             raise Exception('Error: Could not find benchmark binary file at %s. ' % bin_path +
                             'Make sure you have built it and set the correct MPB_BINARY_DIR variable in %s.' % __file__)
@@ -266,6 +269,7 @@ class MPB:
             # (e.g. CForest takes all available threads, SBPL leaks memory) at the same time
             random.shuffle(self._planners)
         for ip, planner in enumerate(self._planners):
+            print(planner)
             run = 0
 
             def pbar_prompt():
@@ -289,9 +293,12 @@ class MPB:
             for p in self["benchmark.planning"].keys():
                 self["benchmark.planning." + p] = p == planner
             self.save_settings(self.config_filename)
-            tsk = subprocess.Popen([MPB_BINARY, os.path.abspath(self.config_filename)],
+            binary = MPB_BINARY
+            if planner == "constrained_onf_planner":
+                binary = "/home/mikhail/research/pytorch-motion-planner/scripts/run_bench_mr.py"
+            tsk = subprocess.Popen([binary, os.path.abspath(self.config_filename)],
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                   cwd=os.path.abspath(MPB_BINARY_DIR))
+                                   cwd=os.path.abspath(MPB_BINARY_DIR), env=self._env)
             proc = psutil.Process(tsk.pid)
             create_time = time.time()
             kill_timer = None

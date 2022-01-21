@@ -53,7 +53,7 @@ struct PathStatistics : public Group {
   }
 };
 
-namespace stat {
+namespace statistics {
 inline double median(std::vector<double> values) {
   std::sort(values.begin(), values.end());
   size_t count = values.size();

@@ -31,6 +31,6 @@ class ClearingMetric : public TMetric<ClearingMetric> {
 
   static double evaluateMetric(const ompl::geometric::PathGeometric &trajectory,
                                double, bool visualize = false) {
-    return stat::mean(clearingDistances(trajectory));
+    return statistics::mean(clearingDistances(trajectory));
   }
 };
