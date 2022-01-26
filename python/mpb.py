@@ -15,9 +15,11 @@ from copy import deepcopy
 from utils import *
 from multiprocessing import Pool
 from tqdm.notebook import tqdm
+import os
 
-MPB_BINARY = './benchmark'
-MPB_BINARY_DIR = '../bin'
+MPB_BINARY = os.environ.get("MPB_BINARY", './benchmark')
+MPB_BINARY_DIR = os.environ.get("MPB_BINARY_DIR", '../bin')
+MPB_PYTHON_BINARY = os.environ.get("MPB_PYTHON_BINARY", "./benchmark")
 
 # limit memory by this fraction of available memory if activated for parallel MPB execution
 MEMORY_LIMIT_FRACTION = min(0.9, 5. / os.cpu_count())
@@ -269,7 +271,6 @@ class MPB:
             # (e.g. CForest takes all available threads, SBPL leaks memory) at the same time
             random.shuffle(self._planners)
         for ip, planner in enumerate(self._planners):
-            print(planner)
             run = 0
 
             def pbar_prompt():
@@ -295,7 +296,7 @@ class MPB:
             self.save_settings(self.config_filename)
             binary = MPB_BINARY
             if planner == "constrained_onf_planner":
-                binary = "/home/mikhail/research/pytorch-motion-planner/scripts/run_bench_mr.py"
+                binary = MPB_PYTHON_BINARY
             tsk = subprocess.Popen([binary, os.path.abspath(self.config_filename)],
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                    cwd=os.path.abspath(MPB_BINARY_DIR), env=self._env)
@@ -542,8 +543,8 @@ class MultipleMPB:
     @staticmethod
     def run_(arg) -> int:
         config_filename, index, mpb_id, subfolder, memory_limit, runs, silence = arg
-        if memory_limit != 0:
-            resource.setrlimit(resource.RLIMIT_AS, memory_limit)
+        # if memory_limit != 0:
+        #     resource.setrlimit(resource.RLIMIT_AS, memory_limit)
         mpb = MPB(config_file=config_filename)
         code = mpb.run(id=mpb_id,
                        runs=runs,
