@@ -90,7 +90,8 @@ smoother_names = {
     'grips': 'GRIPS',
     'ompl_bspline': 'B-Spline',
     'ompl_shortcut': 'Shortcut',
-    'ompl_simplify_max': 'SimplifyMax'
+    'ompl_simplify_max': 'SimplifyMax',
+    'chomp': 'chomp'
 }
 
 smoothers = list(smoother_names.values())
